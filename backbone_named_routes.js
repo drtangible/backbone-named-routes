@@ -1,6 +1,7 @@
-//     Backbone Named Routes 0.1.0
-//     (c) 2012 Groupon Inc.
-
+/*!
+ * Backbone Named Routes 0.1.0
+ * http://github.com/drtangible/backbone-named-routes.js
+ */
 Backbone.NamedRoutes = {
   PATTERNS: {},
 
