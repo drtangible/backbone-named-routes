@@ -7,7 +7,7 @@ Backbone.NamedRoutes = {
 
   pathFor: function(pathPattern, urlParams, queryParams) {
     var path = pathPattern;
-    if (path[0] !== "/") path = "/" + path;
+    if (path.charAt(0) !== "/") path = "/" + path;
     if (Backbone.history.options && Backbone.history.options.root !== "/") path = Backbone.history.options.root + path;
 
     for(var i = 0; i < urlParams.length; i++) {
