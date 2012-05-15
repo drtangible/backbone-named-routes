@@ -34,6 +34,7 @@ describe("Backbone named routes extension", function() {
       expect(view.helper.helpPath({ foo: "bar", baz: "boo" })).toEqual("/help?foo=bar&baz=boo");
       expect(view.helper.searchPath('kiwis', { foo: "bar", baz: "boo" })).toEqual("/search/kiwis?foo=bar&baz=boo");
       expect(view.helper.searchPath('kiwis', 7, { foo: "bar", baz: "boo" })).toEqual("/search/kiwis/p7?foo=bar&baz=boo");
+      expect(view.helper.searchPath('kiwis', 7, {})).toEqual("/search/kiwis/p7");
     });
 
     it("includes the root if history has been started", function() {
@@ -64,6 +65,7 @@ describe("Backbone named routes extension", function() {
       expect(router.helper.helpPath({ foo: "bar", baz: "boo" })).toEqual("/help?foo=bar&baz=boo");
       expect(router.helper.searchPath('kiwis', { foo: "bar", baz: "boo" })).toEqual("/search/kiwis?foo=bar&baz=boo");
       expect(router.helper.searchPath('kiwis', 7, { foo: "bar", baz: "boo" })).toEqual("/search/kiwis/p7?foo=bar&baz=boo");
+      expect(router.helper.searchPath('kiwis', 7, {})).toEqual("/search/kiwis/p7");
     });
 
     it("includes the root if history has been started", function() {

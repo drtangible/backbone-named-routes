@@ -1,5 +1,5 @@
 /*!
- * Backbone Named Routes 0.1.0
+ * Backbone Named Routes 0.1.1
  * http://github.com/drtangible/backbone-named-routes.js
  */
 Backbone.NamedRoutes = {
@@ -14,7 +14,7 @@ Backbone.NamedRoutes = {
       var param = urlParams[i];
       path = path.replace(/\:\w+/, param);
     }
-    if (queryParams) {
+    if (queryParams && !_.isEmpty(queryParams)) {
       path += "?" + $.param(queryParams);
     }
     return path;
