@@ -37,6 +37,16 @@ describe("Backbone named routes extension", function() {
       expect(view.helper.searchPath('kiwis', 7, {})).toEqual("/search/kiwis/p7");
     });
 
+    it("filters out null and undefined values for query params", function(){
+      var router = new Workspace();
+      var view = new Backbone.View();
+
+      expect(view.helper.helpPath({ foo: "bar", baz: undefined, boo: null })).toEqual("/help?foo=bar");
+      expect(view.helper.searchPath('kiwis', { foo: "bar", baz: undefined, boo: null })).toEqual("/search/kiwis?foo=bar");
+      expect(view.helper.searchPath('kiwis', 7, { foo: "bar", baz: undefined, boo: null })).toEqual("/search/kiwis/p7?foo=bar");
+      expect(view.helper.searchPath('kiwis', 7, { foo: undefined })).toEqual("/search/kiwis/p7");
+    });
+
     it("includes the root if history has been started", function() {
       var router = new Workspace();
       var view = new Backbone.View();
@@ -60,12 +70,20 @@ describe("Backbone named routes extension", function() {
 
     it("allows arbitrary query params", function() {
       var router = new Workspace();
-      var view = new Backbone.View();
 
       expect(router.helper.helpPath({ foo: "bar", baz: "boo" })).toEqual("/help?foo=bar&baz=boo");
       expect(router.helper.searchPath('kiwis', { foo: "bar", baz: "boo" })).toEqual("/search/kiwis?foo=bar&baz=boo");
       expect(router.helper.searchPath('kiwis', 7, { foo: "bar", baz: "boo" })).toEqual("/search/kiwis/p7?foo=bar&baz=boo");
       expect(router.helper.searchPath('kiwis', 7, {})).toEqual("/search/kiwis/p7");
+    });
+
+    it("filters out null and undefined values for query params", function(){
+      var router = new Workspace();
+
+      expect(router.helper.helpPath({ foo: "bar", baz: undefined, boo: null })).toEqual("/help?foo=bar");
+      expect(router.helper.searchPath('kiwis', { foo: "bar", baz: undefined, boo: null })).toEqual("/search/kiwis?foo=bar");
+      expect(router.helper.searchPath('kiwis', 7, { foo: "bar", baz: undefined, boo: null })).toEqual("/search/kiwis/p7?foo=bar");
+      expect(router.helper.searchPath('kiwis', 7, { foo: undefined })).toEqual("/search/kiwis/p7");
     });
 
     it("includes the root if history has been started", function() {
