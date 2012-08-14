@@ -1,10 +1,13 @@
 /*!
- * Backbone Named Routes 0.1.1
+ * Backbone Named Routes 0.1.2
  * http://github.com/drtangible/backbone-named-routes
  */
 
 (function(){
   Backbone.NamedRoutes = {
+
+    VERSION: '0.1.2',
+
     PATTERNS: {},
 
     pathFor: function(pathPattern, urlParams, queryParams) {
