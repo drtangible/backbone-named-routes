@@ -4,75 +4,53 @@
  */
 
 (function(){
-  Backbone.NamedRoutes = {
 
-    VERSION: '0.1.2',
+  var PATTERNS = {};
 
-    PATTERNS: {},
+  var addRoute = function(name, route) {
+    // Create key to store path patterns for this route name.
+    PATTERNS[name] = PATTERNS[name] || {};
 
-    pathFor: function(pathPattern, urlParams, queryParams) {
-      var path = pathPattern;
-      if (path.charAt(0) !== "/") path = "/" + path;
-      if (Backbone.history.options && Backbone.history.options.root !== "/") path = Backbone.history.options.root + path;
+    // Store the route pattern for the combination of this route name and the
+    // number of path params defined in the pattern.
+    var numberOfParams = route.match(/\:\w+/g) ? route.match(/\:\w+/g).length : 0;
+    PATTERNS[name][numberOfParams] = route;
 
-      for(var i = 0; i < urlParams.length; i++) {
-        var param = urlParams[i];
-        path = path.replace(/\:\w+/, param);
-      }
+    // Create the named route helper method for this route name.
+    Backbone.NamedRoutes[name + 'Path'] = function() {
+      var args = Array.prototype.slice.call(arguments);
+      var hasQueryParams = _(args[args.length-1]).isObject();
+      var numberOfParams = hasQueryParams ? arguments.length - 1 : arguments.length;
+      var routePattern = PATTERNS[name][numberOfParams];
+      var queryParams = hasQueryParams ? args.pop() : null;
 
-      var filteredQueryParams = filterObject(queryParams);
-
-      if (filteredQueryParams && !_.isEmpty(filteredQueryParams)) {
-        path += "?" + $.param(filteredQueryParams);
-      }
-      return path;
-    }
+      return pathFor(routePattern, args, queryParams);
+    };
   };
 
-  _(Backbone.View.prototype).extend({
-    helper: Backbone.NamedRoutes
-  });
+  var pathFor = function(pathPattern, urlParams, queryParams) {
+    var path = pathPattern;
+    if (path.charAt(0) !== "/") path = "/" + path;
+    if (Backbone.history.options && Backbone.history.options.root !== "/") path = Backbone.history.options.root + path;
 
-  _(Backbone.Router.prototype).extend({
-    helper: Backbone.NamedRoutes
-  });
+    for(var i = 0; i < urlParams.length; i++) {
+      var param = urlParams[i];
+      path = path.replace(/\:\w+/, param);
+    }
 
-  _(Backbone.Router.prototype).extend({
-    route: (function(original) {
-      return function(route, name, callback) {
-        // Create key to store path patterns for this route name.
-        Backbone.NamedRoutes.PATTERNS[name] = Backbone.NamedRoutes.PATTERNS[name] || {};
+    var filteredQueryParams = filterObject(queryParams);
 
-        // Store the route pattern for the combination of this route name and the
-        // number of path params defined in the pattern.
-        var numberOfParams = route.match(/\:\w+/g) ? route.match(/\:\w+/g).length : 0;
-        Backbone.NamedRoutes.PATTERNS[name][numberOfParams] = route;
-
-        // Create the named route helper method for this route name.
-        Backbone.NamedRoutes[name + 'Path'] = function() {
-          var args = Array.prototype.slice.call(arguments);
-          var hasQueryParams = _(args[args.length-1]).isObject();
-          var numberOfParams = hasQueryParams ? arguments.length - 1 : arguments.length;
-          var routePattern = Backbone.NamedRoutes.PATTERNS[name][numberOfParams];
-          var queryParams = hasQueryParams ? args.pop() : null;
-
-          return Backbone.NamedRoutes.pathFor(routePattern, args, queryParams);
-        };
-
-        // Invoke the orginal #route method.
-        original.apply(this, arguments);
-      };
-    }(Backbone.Router.prototype.route))
-  });
-
-
-  // Private Helper methods
+    if (filteredQueryParams && !_.isEmpty(filteredQueryParams)) {
+      path += "?" + $.param(filteredQueryParams);
+    }
+    return path;
+  };
 
   // Filters out `undefined` and `null` values
   var filterObject = function(object) {
-    var filteredObject = {};
+    var filteredObject = {}, key;
 
-    for(var key in object) {
+    for(key in object) {
       if (has(object, key)) {
         if (object[key] != null) {
           filteredObject[key] = object[key];
@@ -89,5 +67,30 @@
   var has = function(object, key) {
     return hasOwnProperty.call(object, key);
   };
+
+
+  Backbone.NamedRoutes = {
+
+    VERSION: '0.1.3',
+
+    addRoute: addRoute
+  };
+
+  _(Backbone.View.prototype).extend({
+    helper: Backbone.NamedRoutes
+  });
+
+  _(Backbone.Router.prototype).extend({
+    helper: Backbone.NamedRoutes
+  });
+
+  _(Backbone.Router.prototype).extend({
+    route: (function(original) {
+      return function(route, name, callback) {
+        addRoute(name, route);
+        original.apply(this, arguments);
+      };
+    }(Backbone.Router.prototype.route))
+  });
 
 }).call(this);

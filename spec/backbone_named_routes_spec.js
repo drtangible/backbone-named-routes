@@ -110,5 +110,15 @@ describe("Backbone named routes extension", function() {
     expect(model.helper.searchPath('kiwis', 7)).toEqual("/search/kiwis/p7");
   });
 
+  describe("#addRoute", function() {
+    it("adds a named route helper", function() {
+      var view = new Backbone.View();
+      expect(view.helper.fooPath).toBeUndefined();
+
+      Backbone.NamedRoutes.addRoute('foo', '/foo/:id/bar/:id_2');
+      expect(view.helper.fooPath).toBeDefined();
+      expect(view.helper.fooPath('hello', 'world')).toEqual('/foo/hello/bar/world');
+    });
+  });
 
 });
