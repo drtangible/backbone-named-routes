@@ -46,7 +46,7 @@
   };
 
   var pathFor = function(pathPattern, urlParams, queryParams) {
-    var path = pathPattern, history = Backbone.history;
+    var path = pathPattern;
     if (path.charAt(0) !== "/") path = "/" + path;
 
     for(var i = 0; i < urlParams.length; i++) {
