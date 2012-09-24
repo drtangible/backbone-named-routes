@@ -1,5 +1,5 @@
 /*!
- * Backbone Named Routes 0.1.3
+ * Backbone Named Routes 0.1.4
  * http://github.com/drtangible/backbone-named-routes
  */
 
