@@ -38,8 +38,7 @@
 
   var prependRoot = function(route) {
     var history = Backbone.history;
-    if (!history) return route;
-    if (!history.options) return route;
+    if (!history || !history.options || history.options.root == "/") return route;
 
     routeWithRoot = history.options.root + '/' + route;
     return routeWithRoot.replace("//", "/");
