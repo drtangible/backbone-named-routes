@@ -7,7 +7,13 @@
 
   var PATTERNS = {};
 
-  var addRoute = function(name, route) {
+  var addRoute = function(name, route, options) {
+    options = options || {};
+
+    _.defaults(options, {
+      includeRoot: false
+    });
+
     // Create key to store path patterns for this route name.
     PATTERNS[name] = PATTERNS[name] || {};
 
@@ -24,14 +30,24 @@
       var routePattern = PATTERNS[name][numberOfParams];
       var queryParams = hasQueryParams ? args.pop() : null;
 
+      if (options.includeRoot) routePattern = prependRoot(routePattern);
+
       return pathFor(routePattern, args, queryParams);
     };
+  };
+
+  var prependRoot = function(route) {
+    var history = Backbone.history;
+    if (!history) return route;
+    if (!history.options) return route;
+
+    routeWithRoot = history.options.root + '/' + route;
+    return routeWithRoot.replace("//", "/");
   };
 
   var pathFor = function(pathPattern, urlParams, queryParams) {
     var path = pathPattern, history = Backbone.history;
     if (path.charAt(0) !== "/") path = "/" + path;
-    if (history && history.options && history.options.root !== "/") path = history.options.root + path;
 
     for(var i = 0; i < urlParams.length; i++) {
       var param = urlParams[i];
@@ -71,7 +87,7 @@
 
   Backbone.NamedRoutes = {
 
-    VERSION: '0.1.3',
+    VERSION: '0.1.4',
 
     addRoute: addRoute
   };
@@ -87,7 +103,7 @@
   _(Backbone.Router.prototype).extend({
     route: (function(original) {
       return function(route, name, callback) {
-        addRoute(name, route);
+        addRoute(name, route, { includeRoot: true });
         original.apply(this, arguments);
       };
     }(Backbone.Router.prototype.route))

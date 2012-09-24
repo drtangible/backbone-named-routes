@@ -26,7 +26,6 @@ describe("Backbone named routes extension", function() {
 
       var router = new Workspace();
 
-
       Backbone.history.options = null;
 
       spyOn(Backbone.history, 'start').andCallFake(function(options) {
@@ -124,6 +123,36 @@ describe("Backbone named routes extension", function() {
       expect(model.helper.helpPath()).toEqual("/help");
       expect(model.helper.searchPath('kiwis')).toEqual("/search/kiwis");
       expect(model.helper.searchPath('kiwis', 7)).toEqual("/search/kiwis/p7");
+    });
+
+    it("doesn't include the root on manually-created routes (by default)", function() {
+      var router = new Workspace();
+
+      Backbone.history.start({ pushState: true, root: "/articles" });
+
+      Backbone.NamedRoutes.addRoute('foo', '/foo/:id/bar/:id_2');
+      expect(router.helper.fooPath).toBeDefined();
+      expect(router.helper.fooPath('hello', 'world')).toEqual('/foo/hello/bar/world');
+    });
+
+    it("doesn't include the root on manually-created routes (when told not to)", function() {
+      var router = new Workspace();
+
+      Backbone.history.start({ pushState: true, root: "/articles" });
+
+      Backbone.NamedRoutes.addRoute('foo', '/foo/:id/bar/:id_2', { includeRoot: false });
+      expect(router.helper.fooPath).toBeDefined();
+      expect(router.helper.fooPath('hello', 'world')).toEqual('/foo/hello/bar/world');
+    });
+
+    it("includes the root on manually-created routes (when told to)", function() {
+      var router = new Workspace();
+
+      Backbone.history.start({ pushState: true, root: "/articles" });
+
+      Backbone.NamedRoutes.addRoute('foo', '/foo/:id/bar/:id_2', { includeRoot: true });
+      expect(router.helper.fooPath).toBeDefined();
+      expect(router.helper.fooPath('hello', 'world')).toEqual('/articles/foo/hello/bar/world');
     });
   });
 });
