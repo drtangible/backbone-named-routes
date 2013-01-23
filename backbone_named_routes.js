@@ -1,5 +1,5 @@
 /*!
- * Backbone Named Routes 0.1.4
+ * Backbone Named Routes 0.1.5
  * http://github.com/drtangible/backbone-named-routes
  */
 
@@ -86,7 +86,7 @@
 
   Backbone.NamedRoutes = {
 
-    VERSION: '0.1.4',
+    VERSION: '0.1.5',
 
     addRoute: addRoute
   };
