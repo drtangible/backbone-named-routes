@@ -12,19 +12,25 @@ describe("Backbone named routes extension", function() {
   });
 
   describe("when a router is defined", function() {
-    var Workspace, router;
+    var Workspace;
 
     beforeEach(function() {
+      var pattern, name, routes, router;
 
-      Workspace = Backbone.Router.extend({
-        routes: {
-          "help":                 "help",    // #help
-          "search/:query":        "search",  // #search/kiwis
-          "search/:query/p:page": "search"   // #search/kiwis/p7
-        }
-      });
+      routes = {
+        "help":                 "help",    // #help
+        "search/:query":        "search",  // #search/kiwis
+        "search/:query/p:page": "search"   // #search/kiwis/p7
+      };
 
-      var router = new Workspace();
+      for (pattern in routes) {
+        if (!Object.hasOwnProperty.call(routes, pattern)) continue;
+        name = routes[pattern];
+        Backbone.NamedRoutes.addRoute(name, pattern, { includeRoot: true })
+      };
+
+      Workspace = Backbone.Router.extend({ routes: routes });
+      router = new Workspace();
 
       Backbone.history.options = null;
 

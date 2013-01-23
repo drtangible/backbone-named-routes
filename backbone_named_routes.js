@@ -99,13 +99,4 @@
     helper: Backbone.NamedRoutes
   });
 
-  _(Backbone.Router.prototype).extend({
-    route: (function(original) {
-      return function(route, name, callback) {
-        addRoute(name, route, { includeRoot: true });
-        original.apply(this, arguments);
-      };
-    }(Backbone.Router.prototype.route))
-  });
-
 }).call(this);
