@@ -86,14 +86,11 @@
   var initNamedRoutes = resetNamedRoutes = function() {
     PATTERNS = {};
 
-    namedRoutes = Backbone.NamedRoutes = {
+    Backbone.NamedRoutes = Backbone.View.prototype.helper = Backbone.Router.prototype.helper = {
       VERSION: '0.1.6',
       addRoute: addRoute,
       resetNamedRoutes: resetNamedRoutes
     };
-
-    Backbone.View.prototype.helper = namedRoutes;
-    Backbone.Router.prototype.helper = namedRoutes;
   };
 
   initNamedRoutes();
