@@ -1,5 +1,5 @@
 /*!
- * Backbone Named Routes 0.1.5
+ * Backbone Named Routes 0.1.6
  * http://github.com/drtangible/backbone-named-routes
  */
 
@@ -83,20 +83,16 @@
     return hasOwnProperty.call(object, key);
   };
 
+  var initNamedRoutes = resetNamedRoutes = function() {
+    PATTERNS = {};
 
-  Backbone.NamedRoutes = {
-
-    VERSION: '0.1.5',
-
-    addRoute: addRoute
+    Backbone.NamedRoutes = Backbone.View.prototype.helper = Backbone.Router.prototype.helper = {
+      VERSION: '0.1.6',
+      addRoute: addRoute,
+      resetNamedRoutes: resetNamedRoutes
+    };
   };
 
-  _(Backbone.View.prototype).extend({
-    helper: Backbone.NamedRoutes
-  });
-
-  _(Backbone.Router.prototype).extend({
-    helper: Backbone.NamedRoutes
-  });
+  initNamedRoutes();
 
 }).call(this);
