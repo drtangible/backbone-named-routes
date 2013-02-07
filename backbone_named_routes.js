@@ -1,5 +1,5 @@
 /*!
- * Backbone Named Routes 0.1.6
+ * Backbone Named Routes 0.1.7
  * http://github.com/drtangible/backbone-named-routes
  */
 
@@ -86,8 +86,12 @@
   var initNamedRoutes = resetNamedRoutes = function() {
     PATTERNS = {};
 
-    Backbone.NamedRoutes = Backbone.View.prototype.helper = Backbone.Router.prototype.helper = {
-      VERSION: '0.1.6',
+    Backbone.NamedRoutes =
+    Backbone.View.prototype.helper =
+    Backbone.Model.prototype.helper =
+    Backbone.Router.prototype.helper =
+    Backbone.Collection.prototype.helper = {
+      VERSION: '0.1.7',
       addRoute: addRoute,
       resetNamedRoutes: resetNamedRoutes
     };
