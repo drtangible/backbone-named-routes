@@ -1,5 +1,20 @@
 describe("Backbone named routes extension", function() {
 
+  describe("resetNamedRoutes", function() {
+    it('resets the namedRoutes object', function() {
+      Backbone.NamedRoutes.addRoute('divisions', '/divisions');
+      expect(Backbone.NamedRoutes.divisionsPath).toBeDefined();
+
+      Backbone.NamedRoutes.resetNamedRoutes();
+
+      expect(Backbone.NamedRoutes.VERSION).toBeDefined();
+      expect(Backbone.NamedRoutes.addRoute).toBeDefined();
+      expect(Backbone.NamedRoutes.resetNamedRoutes).toBeDefined();
+
+      expect(Backbone.NamedRoutes.divisionsPath).toBeUndefined();
+    });
+  });
+
   describe("#addRoute", function() {
     it("adds a named route helper", function() {
       var view = new Backbone.View();
