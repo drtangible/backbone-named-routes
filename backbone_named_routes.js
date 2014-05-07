@@ -3,7 +3,15 @@
  * http://github.com/drtangible/backbone-named-routes
  */
 
-(function(){
+(function(root, factory) {
+  'use strict';
+
+  if (typeof define === 'function' && define.amd) {
+    define(['underscore', 'backbone'], factory);
+  } else {
+    root.Backbone.NamedRoutes = factory(root._, root.Backbone)
+  }
+})(this, function(_, Backbone){
 
   var PATTERNS = {};
 
@@ -99,4 +107,5 @@
 
   initNamedRoutes();
 
-}).call(this);
+  return Backbone.NamedRoutes;
+});
