@@ -1,8 +1,6 @@
-/**
- * Forked version of Backbone.NamedRoutes (http://github.com/drtangible/backbone-named-routes).
- * Allows to use NamedRoutes with versions of Backbone newer than 1.1.1
- * since which Backbone started to export itself as AMD module.
- * https://github.com/o0/backbone-named-routes
+/*!
+ * Backbone Named Routes 0.1.7
+ * http://github.com/drtangible/backbone-named-routes
  */
 
 (function(root, factory) {
